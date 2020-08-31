@@ -9,16 +9,6 @@
   Object类型的空值null，转换成Boolean类型后仍为null，不是true或者false，不能用于三元表达式
 
 3.
-  Oracle数据库，插入数据前自动获取自增主键id的值：
-    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
-    SELECT SEQ_FORUM_POSTS_CATEGORY.nextval AS id from dual
-    </selectKey>
-
-    dual ：是oracle 数据库中的虚拟表，并不是真实存在的
-    SEQ_FORUM_POSTS_CATEGORY：这个是我们创建序列时自定义的一个序列名称
-    SEQ_FORUM_POSTS_CATEGORY.nextval：这个是取出序列的下一个值，序列可以用户id生成器，每次我们都通过序列取到不同的值，并且不会重复。
-  注意<selectKey>标签的使用，其中属性有：keyProperty、order、resultType、statementType
-4.
   MyBatis中like的用法：
     1.使用mybatis中提供的方法（Oracle与MySQL通用）
       select * from t_user 
@@ -30,3 +20,25 @@
     3.如果是Oracle,则可以使用Oracle自身方法（|| 将多个字符串进行拼接）
       select * from t_user where name like '%' || #{keyword} || '%' 
       select * from t_user where name like #{keyword} || '%' 
+
+4.
+  Oracle数据库，插入数据前自动获取自增主键id的值：
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+    SELECT SEQ_FORUM_POSTS_CATEGORY.nextval AS id from dual
+    </selectKey>
+
+    dual ：是oracle 数据库中的虚拟表，并不是真实存在的
+    SEQ_FORUM_POSTS_CATEGORY：这个是我们创建序列时自定义的一个序列名称
+    SEQ_FORUM_POSTS_CATEGORY.nextval：这个是取出序列的下一个值，序列可以用户id生成器，每次我们都通过序列取到不同的值，并且不会重复。
+  注意<selectKey>标签的使用，其中属性有：keyProperty、order、resultType、statementType。
+  
+5.
+  Oracle数据库排序分页查询:
+    select * from 
+    (select t.*, rownum rn from  PRODUCT_MODEL_BASE t order by OFFERING_NUMBER)
+    where rn between 2 and 10 ;
+  或者
+    select * from 
+    (select t.*, rownum rn from  PRODUCT_MODEL_BASE t)
+    where rn between 2 and 10 
+    order by OFFERING_NUMBER;
