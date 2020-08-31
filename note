@@ -26,3 +26,4 @@
       3.如果是Oracle,则可以使用Oracle自身方法（|| 将多个字符串进行拼接）
         select * from t_user where name like '%' || #{keyword} || '%' 
         select * from t_user where name like #{keyword} || '%' 
+5. 
