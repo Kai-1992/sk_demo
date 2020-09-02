@@ -42,3 +42,36 @@
     (select t.*, rownum rn from  PRODUCT_MODEL_BASE t)
     where rn between 2 and 10 
     order by OFFERING_NUMBER;
+
+6.
+  // 读取上传的CSV文件file，封装到对应的实体类集合中
+	坐标：    <!-- csv文件解析依赖 -->
+		        <dependency>
+		            <groupId>com.opencsv</groupId>
+		            <artifactId>opencsv</artifactId>
+		            <version>4.3.2</version>
+		        </dependency>
+
+  private List<ProjectInfoDO> getCsvData(MultipartFile file) {
+      List<ProjectInfoDO> projectInfoDOList = new ArrayList<>();
+      try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream(),"GBK"), ',')) {
+          List<String[]> records = reader.readAll();
+          Iterator<String[]> iterator = records.iterator();
+          //skip header row
+          iterator.next();
+          while(iterator.hasNext()){
+              String[] record = iterator.next();
+              ProjectInfoDO projectInfoDO = new ProjectInfoDO();
+              projectInfoDO.setProjectNumber(record[0]);
+              projectInfoDO.setStatus(ProjectStatus.getCodeByName(record[1]));
+              projectInfoDO.setId(Long.valueOf(record[2]));
+              projectInfoDO.setComment(record[3]);
+              projectInfoDOList.add(projectInfoDO);
+          }
+      } catch (IOException e) {
+          logger.error("解析csv文件失败：", e);
+          return null;
+      }
+      return projectInfoDOList;
+  }
+
