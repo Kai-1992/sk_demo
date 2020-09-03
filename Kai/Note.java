@@ -75,3 +75,8 @@
       return projectInfoDOList;
   }
 
+7.
+	@requestparam( required = false) 的作用？
+    不传值后台也不会报错，但是如果@requestparam( required = false)的括号中指定了基本数据类型，
+		例如(@requestparam(value = 'num' required = false)  int num) 这个时候如果不传值是会报错的，
+		因为不传值就赋null,但是int类型不能为null,解决办法，修改成Integer即可。
