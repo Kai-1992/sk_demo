@@ -9,17 +9,19 @@
   Object类型的空值null，转换成Boolean类型后仍为null，不是true或者false，不能用于三元表达式
 
 3.
-  MyBatis中like的用法：
-    1.使用mybatis中提供的方法（Oracle与MySQL通用）
-      select * from t_user 
-      where 1 = 1
-      <bind name="word" value='"%"+keyword +"%"'/>
-      and name like #{word}
-    2.如果是MySQL，则使用MySQL自身的方法（concat关键字是 将多个字符串进行拼接）
-      select * from t_user where name like concat('%', #{keyWord}, '%')
-    3.如果是Oracle,则可以使用Oracle自身方法（|| 将多个字符串进行拼接）
-      select * from t_user where name like '%' || #{keyword} || '%' 
-      select * from t_user where name like #{keyword} || '%' 
+	MyBatis中like的用法：
+		1.使用mybatis中提供的方法（Oracle与MySQL通用）
+				select * from t_user 
+				where 1 = 1
+				<if test="keyword != null">
+					<bind name="kw" value="'%' + _parameter.keyword + '%'" />
+					and PRODUCT_NAME LIKE #{kw}     
+				</if>
+		2.如果是MySQL，则使用MySQL自身的方法（concat关键字是 将多个字符串进行拼接）
+				select * from t_user where name like concat('%', #{keyWord}, '%')
+		3.如果是Oracle,则可以使用Oracle自身方法（|| 将多个字符串进行拼接）
+				select * from t_user where name like '%' || #{keyword} || '%' 
+				select * from t_user where name like #{keyword} || '%' 
 
 4.
   Oracle数据库，插入数据前自动获取自增主键id的值：
