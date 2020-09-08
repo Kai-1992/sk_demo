@@ -80,3 +80,11 @@
     不传值后台也不会报错，但是如果@requestparam( required = false)的括号中指定了基本数据类型，
 		例如(@requestparam(value = 'num' required = false)  int num) 这个时候如果不传值是会报错的，
 		因为不传值就赋null,但是int类型不能为null,解决办法，修改成Integer即可。
+
+8.
+  mybatis字段加密存入数据库：
+		<if test = "firstName != null">
+			#{ firstName, javaType=EncryptString, jdbcType=VARCHAR},
+		</if>
+	根据加密字段查询数据之前也需要对该字段进行加密再查询；mybatis会自动把查询到的结果中加密的字段进行解密输出
+
