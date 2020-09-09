@@ -89,4 +89,29 @@
 			#{ firstName, javaType=EncryptString, jdbcType=VARCHAR},
 		</if>
 	根据加密字段查询数据之前也需要对该字段进行加密再查询；mybatis会自动把查询到的结果中加密的字段进行解密输出
+	
+9.
+	生成指定长度的随机密码：
+		public static String generatePassword(int length) {
+					char[] special = "@-!#%&^*".toCharArray();
+					char[] cipher = new char[length];
+					SecureRandom random = new SecureRandom();
+					int i = 0;
+					while (i < length) {
+							if (i < 2) {
+									cipher[i] = (char) ('A' + random.nextDouble() * 26);
+							} else if (i < 4) {
+									cipher[i] = (char) ('a' + random.nextDouble() * 26);
+							} else {
+									cipher[i] = (char) ('0' + random.nextDouble() * 10);
+							}
+							i++;
+					}
+					int j = random.nextInt(special.length);
+					if (cipher.length >= special.length) {
+							cipher[j] = special[j];
+					}
+					String password = new String(cipher);
+					return password;
+		}
 
