@@ -115,3 +115,8 @@
 					return password;
 		}
 
+10.
+	Oracle数据库倒序排序，把值为null的排在最后
+		select * from PORTAL_USER 
+		where DELETE_STATUS ='0'
+		order by MODIFICATION_TIME desc nulls last;
