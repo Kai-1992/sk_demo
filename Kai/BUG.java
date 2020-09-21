@@ -6,25 +6,25 @@
 2.
   spring配置如下：
     pis:
-      apiKey:064000121
+      apiKey: 064000000
   程序中取值：
     @Value("${pis.cloudApi.apiKey}")
     privateStringpisCloudApiKey;
-  spring会把064000121当作八进制，输出十进制结果：13631569
+  spring会把064000000当作八进制，输出十进制结果：364110000
     tips：以0开头的数字spring会默认当作八进制转换成十进制输出
   修改方案，加引号：
     pis:
-    apiKey:'064000121'
+      apiKey: '064000000'
 
 3.
   【对象引用的问题】引用同一个set集合对象，导致一处修改，其它处处也会修改。（可以看每个set的hashCode是否相同）
   错误代码:
   categoryApproveList.forEach(
-      categoryApproveEntity->{
-      Set<String> tempApproveNoteSet = Sets.newHashSet();
-        if(categoryApproveEntity.getCategoryIds() != null && categoryApproveEntity.getApproveNotes() != null){
-          String[] categoryIds = categoryApproveEntity.getCategoryIds().split(",");
-          String[] approveNotes = categoryApproveEntity.getApproveNotes().split(",");
+      c->{
+        Set<String> tempApproveNoteSet = Sets.newHashSet();
+        if(c.getCategoryIds() != null && c.getApproveNotes() != null){
+          String[] categoryIds = c.getCategoryIds().split(",");
+          String[] approveNotes = c.getApproveNotes().split(",");
           Collections.addAll(tempApproveNoteSet, approveNotes);
           Arrays.stream(categoryIds).forEach(
               categoryId-> {
@@ -42,10 +42,10 @@
   );
   正确代码：
   categoryApproveList.forEach(
-      categoryApproveEntity->{
-        if(categoryApproveEntity.getCategoryIds() != null && categoryApproveEntity.getApproveNotes() != null){
-          String[] categoryIds = categoryApproveEntity.getCategoryIds().split(",");
-          String[] approveNotes = categoryApproveEntity.getApproveNotes().split(",");
+      c->{
+        if(c.getCategoryIds() != null && c.getApproveNotes() != null){
+          String[] categoryIds = c.getCategoryIds().split(",");
+          String[] approveNotes = c.getApproveNotes().split(",");
           Arrays.stream(categoryIds).forEach(
               categoryId-> {
                 if(categoryApproveMap.get(categoryId) == null){
